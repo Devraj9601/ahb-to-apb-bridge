@@ -4,169 +4,155 @@
 
 # \## 📌 Project Overview
 
-# This project implements an \*\*AHB to APB bridge using Verilog HDL\*\* and is successfully tested on the \*\*Basys 3 FPGA board\*\*.
+### This project implements an \*\*AHB to APB bridge using Verilog HDL\*\* and is successfully tested on the \*\*Basys 3 FPGA board\*\*.
 
 # 
 
-# The bridge connects a \*\*high-speed AHB bus\*\* to \*\*low-speed APB peripherals\*\* by converting protocols using a \*\*Finite State Machine (FSM)\*\*.
+### The bridge connects a \*\*high-speed AHB bus\*\* to \*\*low-speed APB peripherals\*\* by converting protocols using a \*\*Finite State Machine (FSM)\*\*.
 
 # 
 
-# \---
+### \---
 
 # 
 
-# \## ⚙️ System Working (Simple Explanation)
+### \## ⚙️ System Working (Simple Explanation)
 
 # 
 
-# 1\. After reset, the \*\*AHB master\*\* generates a sequence of operations automatically.
+### 1\. After reset, the \*\*AHB master\*\* generates a sequence of operations automatically.
 
 # 
 
-# 2\. It first performs \*\*WRITE operations\*\* to peripherals:
+### 2\. It first performs \*\*WRITE operations\*\* to peripherals:
 
-# &#x20;  - LED  
+### &#x20;  - LED  
 
-# &#x20;  - Timer  
+### &#x20;  - Timer  
 
-# &#x20;  - UART  
-
-# 
-
-# 3\. The \*\*AHB slave interface\*\*:
-
-# &#x20;  - Receives `Haddr`, `Hwrite`, `Htrans`, `Hwdata`
-
-# &#x20;  - Stores valid transaction signals  
-
-# &#x20;  - Decodes address and selects peripheral using `Pselx`  
-
-# &#x20;    - `001` → LED  
-
-# &#x20;    - `010` → Timer  
-
-# &#x20;    - `100` → UART  
+### &#x20;  - UART  
 
 # 
 
-# 4\. The \*\*APB controller (FSM)\*\* converts AHB signals into APB protocol signals.
+## 3\. The \*\*AHB slave interface\*\*:
+
+### &#x20;  - Receives `Haddr`, `Hwrite`, `Htrans`, `Hwdata`
+
+### &#x20;  - Stores valid transaction signals  
+
+### &#x20;  - Decodes address and selects peripheral using `Pselx`  
+
+### &#x20;    - `001` → LED  
+
+### &#x20;    - `010` → Timer  
+
+### &#x20;    - `100` → UART  
 
 # 
 
-# \---
+## 4\. The \*\*APB controller (FSM)\*\* converts AHB signals into APB protocol signals.
 
 # 
 
-# \## 🔄 Write Operation (AHB → APB)
+### \---
 
 # 
 
-# \- `Pselx` selects the peripheral  
-
-# \- `Pwrite = 1`  
-
-# \- `Penable = 1` during access phase  
-
-# \- `Paddr` carries address  
-
-# \- `Pwdata` carries data  
+### \## 🔄 Write Operation (AHB → APB)
 
 # 
 
-# \*\*FSM States:\*\*
+### \- `Pselx` selects the peripheral  
+
+### \- `Pwrite = 1`  
+
+### \- `Penable = 1` during access phase  
+
+### \- `Paddr` carries address  
+
+### \- `Pwdata` carries data  
 
 # 
 
-# WWAIT → WRITE → WENABLE
+## \*\*FSM States:\*\*
 
 # 
 
-# 
-
-# \---
-
-# 
-
-# \## 🔄 Read Operation (APB → AHB)
-
-# 
-
-# \- Read performed from \*\*Timer peripheral\*\*  
-
-# \- Address: `0x8400\_0000`  
-
-# \- `Pwrite = 0`  
-
-# \- Data returned through `Prdata`  
-
-# 
-
-# \*\*FSM States:\*\*
-
-# 
-
-# READ → RENABLE
+### WWAIT → WRITE → WENABLE
 
 # 
 
 # 
 
-# \---
+### \---
 
 # 
 
-# \## 🔌 Peripherals
+## \## 🔄 Read Operation (APB → AHB)
 
 # 
 
-# \### 💡 LED + Pattern Generator
+## \- Read performed from \*\*Timer peripheral\*\*  
 
-# \- Stores LED input data  
+### \- Address: `0x8400\_0000`  
 
-# \- Timer generates tick signal  
+### \- `Pwrite = 0`  
 
-# \- LEDs blink based on input pattern  
-
-# 
-
-# \*\*Example:\*\*
+### \- Data returned through `Prdata`  
 
 # 
 
-# Input = 1011
+## \*\*FSM States:\*\*
 
-# → LEDs 3, 1, 0 blink
+# 
 
-# → LED 2 OFF
+### READ → RENABLE
 
 # 
 
 # 
 
-# \---
+### \---
 
 # 
 
-# \### ⏱️ Timer
-
-# \- Stores delay value  
-
-# \- Generates periodic tick pulses  
+## \## 🔌 Peripherals
 
 # 
 
-# \---
+## \### 💡 LED + Pattern Generator
+
+## \- Stores LED input data  
+
+## \- Timer generates tick signal  
+
+## \- LEDs blink based on input pattern  
 
 # 
 
-# \### 📡 UART
+### \*\*Example:\*\*
 
-# \- Receives data through APB writes  
+# 
 
-# \- Transmits serial data (`tx`)  
+### Input = 1011
 
-# \- Output observed on PC using \*\*PuTTY\*\*  
+### → LEDs 3, 1, 0 blink
+
+### → LED 2 OFF
+
+# 
+
+# 
+
+### \---
+
+# 
+
+### \### ⏱️ Timer
+
+### \- Stores delay value  
+
+### \- Generates periodic tick pulses  
 
 # 
 
@@ -174,121 +160,135 @@
 
 # 
 
-# \### 🔢 Seven Segment Display
+## \### 📡 UART
 
-# Displays:
+### \- Receives data through APB writes  
 
-# \- 1st digit → Read / Write  
+### \- Transmits serial data (`tx`)  
 
-# \- 2nd digit → Peripheral number  
-
-# \- Last digits → Data value  
+### \- Output observed on PC using \*\*PuTTY\*\*  
 
 # 
 
-# \---
+### \---
 
 # 
 
-# \## 🔍 Hardware Debugging (ILA)
+### \### 🔢 Seven Segment Display
+
+## Displays:
+
+### \- 1st display → Read / Write  
+
+### \- 2nd display → Peripheral number  
+
+### \- Last 2 display → Data value  
 
 # 
 
-# Used to monitor:
-
-# \- FSM states  
-
-# \- `Pselx`, `Pwrite`, `Penable`  
-
-# \- Address and data signals  
+### \---
 
 # 
 
-# \---
+## \## 🔍 Hardware Debugging (ILA)
 
 # 
 
-# \## 📊 Results
+## Used to monitor:
 
-# \- Successful protocol conversion  
+### \- FSM states  
 
-# \- Verified read and write operations  
+### \- `Pselx`, `Pwrite`, `Penable`  
 
-# \- FPGA implementation working correctly  
+### \- Address and data signals  
 
-# \- UART output observed on PC  
+### \- Read and Write operation 
 
-# \- LEDs and display functioning as expected  
-
-# 
-
-# \---
+### \---
 
 # 
 
-# \## 🚀 Key Features
+## \## 📊 Results
 
-# \- FSM-based design  
+### \- Successful protocol conversion  
 
-# \- Multiple APB peripherals  
+### \- Verified read and write operations  
 
-# \- Synthesizable Verilog RTL  
+### \- FPGA implementation working correctly  
 
-# \- FPGA hardware validation  
+### \- UART output observed on PC(PUTTY)  
 
-# \- ILA-based debugging  
-
-# 
-
-# \---
+### \- LEDs and display functioning as expected  
 
 # 
 
-# \## 🛠️ Tools Used
-
-# \- Verilog HDL  
-
-# \- Xilinx Vivado  
-
-# \- Basys 3 FPGA  
-
-# \- PuTTY  
+### \---
 
 # 
 
-# \---
+## \## 🚀 Key Features
+
+### \- FSM-based design  
+
+### \- Multiple APB peripherals  
+
+### \- Synthesizable Verilog RTL  
+
+### \- FPGA hardware validation  
+
+### \- ILA-based debugging  
 
 # 
 
-# \## 📂 Project Structure
+### \---
 
 # 
 
-# ahb-to-apb-bridge/
+## \## 🛠️ Tools Used
 
-# ├── src/ # RTL design files
+### \- Verilog HDL  
 
-# ├── sim/ # Testbench
+### \- Xilinx Vivado  
 
-# ├── diagrams/ # Block \& state diagrams
+### \- Basys 3 FPGA  
 
-# ├── results/ # Waveforms \& hardware outputs
+### \- PuTTY  
 
-# ├── bridge.xdc # Constraints
+# 
 
-# └── README.md
+### \---
+
+# 
+
+## \## 📂 Project Structure
+
+# 
+
+### ahb-to-apb-bridge/
+
+### ├── src/ # RTL design files
+
+### ├── sim/ # Testbench
+
+### ├── diagrams/ # Block \& state diagrams
+
+### ├── results/ # Waveforms \& hardware outputs
+
+### ├── bridge.xdc # Constraints
+
+### └── README.md
 
 # 
 
 # 
 
-# \---
+### \---
 
 # 
 
-# \## 👤 Author
+## \## 👤 Author
 
-# \*\*P. Devraj\*\*  
+## \*\*P. Devraj\*\*  
 
-# B.Tech ECE, GIET University 
+## B.Tech ECE, GIET University 
 
